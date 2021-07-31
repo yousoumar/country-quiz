@@ -7,16 +7,9 @@
 body {
   font-family: Fira Mono, monospace;
   background: url('./assets/background.png') no-repeat center / cover ;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 1rem;
-  color: black;
+  
 }
-#root{
-  width: 100%;
-}
+
 
 img{
   width: 100%;
@@ -33,12 +26,18 @@ button{
   font-family: inherit;
   color: inherit;
 }
-
+#root {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 5rem 1rem 2rem 1rem;
+}
 #app{
 
   max-width: 600px;
   margin: 0 auto 7rem auto;
-
 }
 #app h1{
   
@@ -144,4 +143,16 @@ button{
   font-size: 1.1rem;
   font-weight: 700;
 
+}
+
+footer{
+  color: white;
+  text-align: center;
+  margin-top: auto;
+  font-size: .8rem;
+}
+footer a{
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
 }

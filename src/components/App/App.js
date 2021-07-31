@@ -103,9 +103,12 @@ function App() {
     correctResponseSetState(country);
     possibleResponsesSetState(possibleResponses);
     countriesSetState(countriesWithoutCurrentQuestionCountry);
+    tourNumber.current = 0;
+    score.current = 5;
     gameOverSetState(false)
   }
   return (
+    <>
     <div id="app">
       <h1>Country quiz</h1>
       <div className="container">
@@ -158,7 +161,10 @@ function App() {
           
         }
       </div>
+
     </div>
+    <footer><p>created by <a target="_blank" href="https://github.com/yousoumars">yousoumar</a> - devchallenges.io</p></footer>
+    </>
   );
 }
 
