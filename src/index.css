@@ -21,4 +21,14 @@ body {
 img{
   width: 100%;
   display: block;
+  object-fit: cover;
+}
+
+button{
+  border : none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
 }

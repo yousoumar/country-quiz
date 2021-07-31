@@ -64,14 +64,45 @@
   
 }
 #app li span:first-child{
-  margin-right: 2rem;
+  margin-right: 1rem;
   font-size: 1.5rem;
 }
 #app li span:nth-child(2){
-  padding-right: 2rem;
+  margin-right: 1rem;
 }
 #app li .icon{
   width: 2rem;
   flex: none;
   margin-left: auto;
+}
+
+.results{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #1D355D;
+}
+.results .img{
+  max-width: 15rem;
+
+}
+
+.results h2{
+
+  font-size: 3rem;
+  margin: 4rem 0 2rem 0rem;
+}
+
+.results span{
+  font-size: 2rem;
+  color: #60BF88;
+}
+
+.results button{
+  border: 2px solid #1D355D;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin: 3rem 0 0 0 ;
 }

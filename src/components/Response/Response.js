@@ -1,10 +1,9 @@
 import {useRef, useState} from 'react';
-export default function Response({name, index, correctResponse, possibleShownResponses, addToRef, countriesSetState,  countriesState, newQuestion,possibleResponsesState, possibleResponsesSetState, firstTestState, firstTestSetState }) {
-    // to store score
-    let score = useRef(5).current;
-
+export default function Response(
+    {name, index, correctResponse, possibleShownResponses, addToRef, countriesSetState,  countriesState, newQuestion,possibleResponsesState, possibleResponsesSetState, firstTestState, firstTestSetState,score }) {
+    
     function checkResponse(element) {
-        
+
         if(firstTestState){
             firstTestSetState(false);
             let userResponse = element.children[1].innerText;
@@ -13,7 +12,7 @@ export default function Response({name, index, correctResponse, possibleShownRes
                 element.querySelector('img').src = process.env.PUBLIC_URL + '/images/correct.svg'
                 
             }else{
-                score= score-1;
+                score.current --;
                 element.classList.add('incorrect');
                 element.querySelector('img').src = process.env.PUBLIC_URL + '/images/incorrect.svg';
                 possibleShownResponses.forEach(element => {

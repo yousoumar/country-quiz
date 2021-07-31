@@ -2,38 +2,64 @@ import {useState, useEffect, useRef} from 'react';
 import './App.css';
 import adventure from '../../assets/adventure.svg';
 import Response from '../Response/Response';
+import resultsImg from '../../assets/winners.svg';
 
 function App() {
 
-  // to store data sent by the API
+  // store data sent by the API
+  const storageCountries = JSON.parse(localStorage.getItem('countries')) ;
   const [countriesState, countriesSetState] = useState([]);
-  console.log(countriesState.length)
+
   // current question response
   const [correctResponseState, correctResponseSetState] = useState({});
+
   // current question possible responses
   const [possibleResponsesState, possibleResponsesSetState] = useState([]);
 
+  // to store score
+  const score = useRef(5);
 
+  // count the number of game turns
+  let tourNumber = useRef(0);
+
+  const [gameOverState, gameOverSetState] = useState(false);
   useEffect(() => {
-    fetch("https://restcountries.eu/rest/v2/all")
-    .then(response => response.json())
-    .then(data =>{
-      let country = data[Math.floor(Math.random()*(data.length))];
-      let countriesWithoutCurrentQuestionCountry = data.filter(item => item.name !== country.name);
-      let possibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
-      possibleResponses = [country, ...possibleResponses]
-      correctResponseSetState(country);
-      possibleResponsesSetState(possibleResponses);
-      countriesSetState(countriesWithoutCurrentQuestionCountry);
-    } );
+    if (!storageCountries){
+      fetch("https://restcountries.eu/rest/v2/all")
+      .then(response => response.json())
+      .then(data =>{
+        localStorage.setItem('countries', JSON.stringify(data));
+
+        let country = data[Math.floor(Math.random()*(data.length))];
+        let countriesWithoutCurrentQuestionCountry = data.filter(item => item.name !== country.name);
+        let possibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
+        possibleResponses = [country, ...possibleResponses];
+
+        correctResponseSetState(country);
+        possibleResponsesSetState(possibleResponses);
+        countriesSetState(countriesWithoutCurrentQuestionCountry);
+      } );
+    }else{
+
+        let country = storageCountries[Math.floor(Math.random()*(storageCountries.length))];
+        let countriesWithoutCurrentQuestionCountry = storageCountries.filter(item => item.name !== country.name);
+        let possibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
+        possibleResponses = [country, ...possibleResponses];
+
+        correctResponseSetState(country);
+        possibleResponsesSetState(possibleResponses);
+        countriesSetState(countriesWithoutCurrentQuestionCountry);
+
+    }
+   
     
     
   }, []);
 
 
-  // to store possible responses
+  // to store possible responses reference
   const ref = useRef([]);
-  console.log(ref.current)
+
   function addToRef(element) {
       
     if (element && !(ref.current.includes(element))){
@@ -46,9 +72,13 @@ function App() {
   let sortMethode = useRef(true)
 
   function newQuestion() {
-    console.log(possibleResponsesState)
+    tourNumber.current ++;
+    if(tourNumber.current >= 5){
+      gameOverSetState(true)
+    }
     ref.current = [];
     countriesSetState(countriesState.filter(item => item.name !== correctResponseState.name));
+    
 
     let country,countriesWithoutCurrentQuestionCountry ,newPossibleResponses;
     country = countriesState[Math.floor(Math.random()*(countriesState.length))];
@@ -68,20 +98,34 @@ function App() {
     countriesSetState(countriesWithoutCurrentQuestionCountry);
     correctResponseSetState(country);
     possibleResponsesSetState(newPossibleResponses);
+    firstTestSetState(true);
   }
 
   return (
     <div id="app">
       <h1>Country quiz</h1>
       <div className="container">
-        <div className="logo">
-          <img src={adventure}alt="" /> 
-        </div>
-        <div className="question">{correctResponseState.capital} is the capital of ?</div>
-        <ul className="responses">
-          {
-
-            possibleResponsesState.map((response, index) => 
+        {
+          gameOverState ? 
+          
+          <div className = "results">
+            <div className="img"><img src={resultsImg} alt="" /></div>
+            <h2>Results</h2>
+            <p>You got <span>{score.current}</span> correct answers</p>
+            <button className="button">
+              Try again
+            </button>
+          </div> 
+          : 
+          <>
+            <div className="logo">
+            <img src={adventure}alt="" /> 
+            </div>
+            <div className="question">{correctResponseState.capital} is the capital of ?</div>
+            <ul className="responses">
+              {
+                
+                possibleResponsesState.map((response, index) => 
                                           <Response
                                             name = {response.name}
                                             key = {response.name} 
@@ -96,11 +140,19 @@ function App() {
                                             possibleResponsesState = {possibleResponsesState}
                                             firstTestState = {firstTestState}
                                             firstTestSetState ={ firstTestSetState}
+                                            gameOverSetState = {gameOverSetState}
+                                            score = {score}
+                                            tourNumber = {tourNumber}
+                                  
                                           />
                                           )
                                           
-          }
-        </ul>
+             }
+            </ul>
+          </>
+      
+          
+        }
       </div>
     </div>
   );
