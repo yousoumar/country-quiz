@@ -1,5 +1,4 @@
 import {useState, useEffect, useRef} from 'react';
-import './App.css';
 import adventure from '../../assets/adventure.svg';
 import Response from '../Response/Response';
 import resultsImg from '../../assets/winners.svg';
