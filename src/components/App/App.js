@@ -118,7 +118,7 @@ function App() {
           <div className = "results">
             <div className="img"><img src={resultsImg} alt="" /></div>
             <h2>Results</h2>
-            <p>You got <span>{score.current}</span> correct answers</p>
+            <p>You got <span>{score.current}/5</span> correct answers</p>
             <button className="button" onClick = { e => play()}>
               Try again
             </button>

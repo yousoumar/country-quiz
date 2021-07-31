@@ -1,6 +1,5 @@
 import {useRef, useState} from 'react';
-export default function Response(
-    {name, index, correctResponse, possibleShownResponses, addToRef, countriesSetState,  countriesState, newQuestion,possibleResponsesState, possibleResponsesSetState, firstTestState, firstTestSetState,score }) {
+export default function Response({name, index, correctResponse, possibleShownResponses, addToRef, newQuestion, firstTestState, firstTestSetState, score }) {
     
     function checkResponse(element) {
 
