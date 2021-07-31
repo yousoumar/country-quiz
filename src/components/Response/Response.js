@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+
 export default function Response({name, index, correctResponse, possibleShownResponses, addToRef, newQuestion, firstTestState, firstTestSetState, score }) {
     
     function checkResponse(element) {
