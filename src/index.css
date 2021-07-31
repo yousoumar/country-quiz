@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap);
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap');
 *, :after, :before {
   box-sizing: border-box;
   margin: 0;
@@ -31,6 +31,7 @@ button{
   cursor: pointer;
   font-size: inherit;
   font-family: inherit;
+  color: inherit;
 }
 
 #app{
@@ -140,4 +141,7 @@ button{
   border-radius: 12px;
   padding: 1rem 1.5rem;
   margin: 3rem 0 0 0 ;
+  font-size: 1.1rem;
+  font-weight: 700;
+
 }

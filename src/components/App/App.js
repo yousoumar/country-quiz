@@ -23,6 +23,7 @@ function App() {
 
   const [gameOverState, gameOverSetState] = useState(false);
   useEffect(() => {
+    
     if (!storageCountries){
       fetch("https://restcountries.eu/rest/v2/all")
       .then(response => response.json())
@@ -40,14 +41,7 @@ function App() {
       } );
     }else{
 
-        let country = storageCountries[Math.floor(Math.random()*(storageCountries.length))];
-        let countriesWithoutCurrentQuestionCountry = storageCountries.filter(item => item.name !== country.name);
-        let possibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
-        possibleResponses = [country, ...possibleResponses];
-
-        correctResponseSetState(country);
-        possibleResponsesSetState(possibleResponses);
-        countriesSetState(countriesWithoutCurrentQuestionCountry);
+        play();
 
     }
    
@@ -99,7 +93,18 @@ function App() {
     possibleResponsesSetState(newPossibleResponses);
     firstTestSetState(true);
   }
+  
+  function play(){
+    let country = storageCountries[Math.floor(Math.random()*(storageCountries.length))];
+    let countriesWithoutCurrentQuestionCountry = storageCountries.filter(item => item.name !== country.name);
+    let possibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
+    possibleResponses = [country, ...possibleResponses];
 
+    correctResponseSetState(country);
+    possibleResponsesSetState(possibleResponses);
+    countriesSetState(countriesWithoutCurrentQuestionCountry);
+    gameOverSetState(false)
+  }
   return (
     <div id="app">
       <h1>Country quiz</h1>
@@ -111,7 +116,7 @@ function App() {
             <div className="img"><img src={resultsImg} alt="" /></div>
             <h2>Results</h2>
             <p>You got <span>{score.current}</span> correct answers</p>
-            <button className="button">
+            <button className="button" onClick = { e => play()}>
               Try again
             </button>
           </div> 
