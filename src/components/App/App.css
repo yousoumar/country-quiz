@@ -50,10 +50,7 @@
   cursor: pointer;
   transition: .3s;
 }
-#app li:hover{
-  border: 2px solid #F9A826;
-  background: #F9A826;
-}
+
 #app li.correct{
   background: #60BF88;
   border-color: #60BF88;;
@@ -68,9 +65,13 @@
 }
 #app li span:first-child{
   margin-right: 2rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
+}
+#app li span:nth-child(2){
+  padding-right: 2rem;
 }
 #app li .icon{
   width: 2rem;
+  flex: none;
   margin-left: auto;
 }
