@@ -70,11 +70,14 @@ function App() {
   }
   
   function newQuestion() {
+    ref.current = [];   
     tourNumber.current ++;
+    
     if(tourNumber.current >= 5){
-      gameOverSetState(true)
+      gameOverSetState(true);
+      
     }
-    ref.current = [];    
+     
 
     let country, newPossibleResponses;
     country =  countriesState.splice(Math.floor(Math.random()*(countriesState.length)), 1)[0];
@@ -91,11 +94,11 @@ function App() {
       countriesState.sort((country1, country2)=> (country2.area*Math.random()- country1.area*Math.random()));
 
       newPossibleResponses = countriesState.splice(0, 3);
-      newPossibleResponses = [country, ...newPossibleResponses];
+      newPossibleResponses = [...newPossibleResponses, country];
       newPossibleResponses.sort((country1, country2)=> (country2.area*Math.random()- country1.area*Math.random()));
     }
+
     sortMethode.current = !sortMethode.current
-    countriesSetState(countriesState);
     correctResponseSetState(country);
     possibleResponsesSetState(newPossibleResponses);
     firstTestSetState(true);
@@ -108,6 +111,8 @@ function App() {
 
     tourNumber.current = 0;
     score.current = 5;
+    
+
     correctResponseSetState(country);
     possibleResponsesSetState(possibleResponses);
     countriesSetState(storageCountries);
