@@ -28,10 +28,9 @@ export default function Response({name, index, correctResponse, possibleShownRes
         
         setTimeout(()=>{
             
-            firstTestSetState(true);
             newQuestion();
             
-        }, 1000)
+        }, 1000);
 
     }
 

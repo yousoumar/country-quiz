@@ -33,22 +33,23 @@ function App() {
   // to sort countries list differently for each new question
   let sortMethode = useRef(true)
 
+  console.log(countriesState)
   useEffect(() => {
     
     if (!storageCountries){
       fetch("https://restcountries.eu/rest/v2/all")
       .then(response => response.json())
       .then(data =>{
+        console.log(data)
         localStorage.setItem('countries', JSON.stringify(data));
 
-        let country = data[Math.floor(Math.random()*(data.length))];
-        let countriesWithoutCurrentQuestionCountry = data.filter(item => item.name !== country.name);
-        let possibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
+        let country = data.splice(Math.floor(Math.random()*(data.length)), 1)[0];
+        let possibleResponses = data.splice(0, 3);
         possibleResponses = [country, ...possibleResponses];
 
         correctResponseSetState(country);
         possibleResponsesSetState(possibleResponses);
-        countriesSetState(countriesWithoutCurrentQuestionCountry);
+        countriesSetState(data);
       } );
     }else{
 
@@ -73,42 +74,42 @@ function App() {
     if(tourNumber.current >= 5){
       gameOverSetState(true)
     }
-    ref.current = [];
-    countriesSetState(countriesState.filter(item => item.name !== correctResponseState.name));
-    
+    ref.current = [];    
 
     let country,countriesWithoutCurrentQuestionCountry ,newPossibleResponses;
-    country = countriesState[Math.floor(Math.random()*(countriesState.length))];
+    country =  countriesState.splice(Math.floor(Math.random()*(countriesState.length)), 1)[0];
+
     if(!sortMethode.current){
       sortMethode.current = !sortMethode.current
-      countriesWithoutCurrentQuestionCountry = countriesState.filter(item => item.name !== country.name).sort((country1, country2)=> (country2.population*Math.random()- country1.population*Math.random()));
-      newPossibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
+      countriesState.sort((country1, country2)=> (country2.population*Math.random()- country1.population*Math.random()));
+
+      newPossibleResponses = countriesState.splice(0, 3);
       newPossibleResponses = [country, ...newPossibleResponses];
       newPossibleResponses.sort((country1, country2)=> (country2.population*Math.random()- country1.population*Math.random()));
     }else{
       sortMethode.current = !sortMethode.current
-      countriesWithoutCurrentQuestionCountry = countriesState.filter(item => item.name !== country.name);
-      newPossibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
-      newPossibleResponses.push(country);
-      newPossibleResponses.sort((country1, country2)=> (country2.area*Math.random() - country1.area*Math.random()))
+      countriesState.sort((country1, country2)=> (country2.area*Math.random()- country1.area*Math.random()));
+
+      newPossibleResponses = countriesState.splice(0, 3);
+      newPossibleResponses = [country, ...newPossibleResponses];
+      newPossibleResponses.sort((country1, country2)=> (country2.area*Math.random()- country1.area*Math.random()));
     }
-    countriesSetState(countriesWithoutCurrentQuestionCountry);
+    countriesSetState(countriesState);
     correctResponseSetState(country);
     possibleResponsesSetState(newPossibleResponses);
     firstTestSetState(true);
   }
   
   function play(){
-    let country = storageCountries[Math.floor(Math.random()*(storageCountries.length))];
-    let countriesWithoutCurrentQuestionCountry = storageCountries.filter(item => item.name !== country.name);
-    let possibleResponses = countriesWithoutCurrentQuestionCountry.splice(0, 3);
+    let country = storageCountries.splice(Math.floor(Math.random()*(storageCountries.length)), 1)[0];
+    let possibleResponses = storageCountries.splice(0, 3);
     possibleResponses = [country, ...possibleResponses];
 
-    correctResponseSetState(country);
-    possibleResponsesSetState(possibleResponses);
-    countriesSetState(countriesWithoutCurrentQuestionCountry);
     tourNumber.current = 0;
     score.current = 5;
+    correctResponseSetState(country);
+    possibleResponsesSetState(possibleResponses);
+    countriesSetState(storageCountries);
     gameOverSetState(false)
   }
   return (
@@ -136,10 +137,10 @@ function App() {
             <ul className="responses">
               {
                 
-                possibleResponsesState.map((response, index) => 
+                possibleResponsesState.map((possibleResponse, index) => 
                                           <Response
-                                            name = {response.name}
-                                            key = {response.name} 
+                                            name = {possibleResponse.name}
+                                            key = {possibleResponse.name} 
                                             index ={index}
                                             correctResponse = {correctResponseState}
                                             addToRef= {addToRef}
