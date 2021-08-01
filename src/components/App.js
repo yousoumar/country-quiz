@@ -6,8 +6,8 @@ import resultsImg from '../assets/winners.svg';
 function App() {
 
   // store data sent by the API
-  const storageCountries = JSON.parse(localStorage.getItem('countries')) ;
   const [countriesState, countriesSetState] = useState([]);
+  const storageCountries = JSON.parse(localStorage.getItem('countries')) ;
 
   // current question response
   const [correctResponseState, correctResponseSetState] = useState({});
@@ -15,13 +15,24 @@ function App() {
   // current question possible responses
   const [possibleResponsesState, possibleResponsesSetState] = useState([]);
 
+  // prevents user from trying the same question multiple times
+  let [firstTestState, firstTestSetState] = useState(true);
+
+  // play and end game
+  const [gameOverState, gameOverSetState] = useState(false);
+
+  // to store possible responses reference
+  const ref = useRef([]);
+
   // to store score
   const score = useRef(5);
 
   // count the number of game turns
   let tourNumber = useRef(0);
 
-  const [gameOverState, gameOverSetState] = useState(false);
+  // to sort countries list differently for each new question
+  let sortMethode = useRef(true)
+
   useEffect(() => {
     
     if (!storageCountries){
@@ -49,10 +60,6 @@ function App() {
     
   }, []);
 
-
-  // to store possible responses reference
-  const ref = useRef([]);
-
   function addToRef(element) {
       
     if (element && !(ref.current.includes(element))){
@@ -61,9 +68,6 @@ function App() {
     
   }
   
-  let [firstTestState, firstTestSetState] = useState(true);
-  let sortMethode = useRef(true)
-
   function newQuestion() {
     tourNumber.current ++;
     if(tourNumber.current >= 5){
