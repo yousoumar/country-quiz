@@ -33,7 +33,6 @@ function App() {
   // to sort countries list differently for each new question
   let sortMethode = useRef(true)
 
-  console.log(countriesState)
   useEffect(() => {
     
     if (!storageCountries){
@@ -76,24 +75,25 @@ function App() {
     }
     ref.current = [];    
 
-    let country,countriesWithoutCurrentQuestionCountry ,newPossibleResponses;
+    let country, newPossibleResponses;
     country =  countriesState.splice(Math.floor(Math.random()*(countriesState.length)), 1)[0];
-
+    
     if(!sortMethode.current){
-      sortMethode.current = !sortMethode.current
+   
       countriesState.sort((country1, country2)=> (country2.population*Math.random()- country1.population*Math.random()));
 
       newPossibleResponses = countriesState.splice(0, 3);
       newPossibleResponses = [country, ...newPossibleResponses];
       newPossibleResponses.sort((country1, country2)=> (country2.population*Math.random()- country1.population*Math.random()));
     }else{
-      sortMethode.current = !sortMethode.current
+      
       countriesState.sort((country1, country2)=> (country2.area*Math.random()- country1.area*Math.random()));
 
       newPossibleResponses = countriesState.splice(0, 3);
       newPossibleResponses = [country, ...newPossibleResponses];
       newPossibleResponses.sort((country1, country2)=> (country2.area*Math.random()- country1.area*Math.random()));
     }
+    sortMethode.current = !sortMethode.current
     countriesSetState(countriesState);
     correctResponseSetState(country);
     possibleResponsesSetState(newPossibleResponses);
@@ -103,7 +103,7 @@ function App() {
   function play(){
     let country = storageCountries.splice(Math.floor(Math.random()*(storageCountries.length)), 1)[0];
     let possibleResponses = storageCountries.splice(0, 3);
-    possibleResponses = [country, ...possibleResponses];
+    possibleResponses = [...possibleResponses, country];
 
     tourNumber.current = 0;
     score.current = 5;
@@ -168,7 +168,7 @@ function App() {
       </div>
 
     </div>
-    <footer><p>created by <a target="_blank" href="https://github.com/yousoumar">yousoumar</a> - devchallenges.io</p></footer>
+    <footer><p>created by <a target="_blank" href="https://github.com/yousoumar" rel="noreferrer">yousoumar</a> - devchallenges.io</p></footer>
     </>
   );
 }
