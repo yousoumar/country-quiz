@@ -30,22 +30,19 @@ function App() {
   // count the number of game turns
   let tourNumber = useRef(0);
 
-  // to sort countries list differently for each new question
-  let sortMethode = useRef(true)
-
   useEffect(() => {
     
     if (!storageCountries){
       fetch("https://restcountries.eu/rest/v2/all")
       .then(response => response.json())
       .then(data =>{
-        data = data.filter(item => item.name && item.capital && item.flag);
-       
+        data = data.filter(item => item.name && item.capital && item.flag && item.numericCode);
+        data.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()))
         localStorage.setItem('countries', JSON.stringify(data));
 
         let country = data.splice(Math.floor(Math.random()*(data.length)), 1)[0];
         let possibleResponses = data.splice(0, 3);
-        possibleResponses = [country, ...possibleResponses];
+        possibleResponses = [country, ...possibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
 
         correctResponseSetState(country);
         possibleResponsesSetState(possibleResponses);
@@ -81,24 +78,11 @@ function App() {
 
     let country, newPossibleResponses;
     country =  countriesState.splice(Math.floor(Math.random()*(countriesState.length)), 1)[0];
-    
-    if(!sortMethode.current){
-   
-      countriesState.sort((country1, country2)=> (country2.population*Math.random()- country1.population*Math.random()));
+    countriesState.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
 
-      newPossibleResponses = countriesState.splice(0, 3);
-      newPossibleResponses = [country, ...newPossibleResponses];
-      newPossibleResponses.sort((country1, country2)=> (country2.population*Math.random()- country1.population*Math.random()));
-    }else{
-      
-      countriesState.sort((country1, country2)=> (country2.area*Math.random()- country1.area*Math.random()));
-
-      newPossibleResponses = countriesState.splice(0, 3);
-      newPossibleResponses = [...newPossibleResponses, country];
-      newPossibleResponses.sort((country1, country2)=> (country2.area*Math.random()- country1.area*Math.random()));
-    }
-
-    sortMethode.current = !sortMethode.current
+    newPossibleResponses = countriesState.splice(0, 3);
+    newPossibleResponses = [country, ...newPossibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
+  
     correctResponseSetState(country);
     possibleResponsesSetState(newPossibleResponses);
     firstTestSetState(true);
@@ -107,7 +91,7 @@ function App() {
   function play(){
     let country = storageCountries.splice(Math.floor(Math.random()*(storageCountries.length)), 1)[0];
     let possibleResponses = storageCountries.splice(0, 3);
-    possibleResponses = [...possibleResponses, country];
+    possibleResponses = [...possibleResponses, country].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
 
     tourNumber.current = 0;
     score.current = 5;
