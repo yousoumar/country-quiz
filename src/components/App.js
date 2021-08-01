@@ -39,7 +39,8 @@ function App() {
       fetch("https://restcountries.eu/rest/v2/all")
       .then(response => response.json())
       .then(data =>{
-        console.log(data)
+        data = data.filter(item => item.name && item.capital && item.flag);
+       
         localStorage.setItem('countries', JSON.stringify(data));
 
         let country = data.splice(Math.floor(Math.random()*(data.length)), 1)[0];
