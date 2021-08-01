@@ -114,7 +114,12 @@ button{
   flex: none;
   margin-left: auto;
 }
-
+#app .flag img{
+  width: 5.4rem;
+  margin-bottom: 1.75rem;
+  filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.1));
+  border-radius: 4px;
+}
 .results{
   text-align: center;
   display: flex;

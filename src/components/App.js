@@ -21,11 +21,14 @@ function App() {
   // play and end game
   const [gameOverState, gameOverSetState] = useState(false);
 
+  // allows to alternate questions between flag and capital
+  const [toggleFlagCapitalState, toggleFlagCapitalSetState] = useState(false);
+
   // to store possible responses reference
   const ref = useRef([]);
 
   // to store score
-  const score = useRef(5);
+  const score = useRef(10);
 
   // count the number of game turns
   let tourNumber = useRef(0);
@@ -70,7 +73,7 @@ function App() {
     ref.current = [];   
     tourNumber.current ++;
     
-    if(tourNumber.current >= 5){
+    if(tourNumber.current >= 10){
       gameOverSetState(true);
       
     }
@@ -85,6 +88,7 @@ function App() {
   
     correctResponseSetState(country);
     possibleResponsesSetState(newPossibleResponses);
+    toggleFlagCapitalSetState(!toggleFlagCapitalState);
     firstTestSetState(true);
   }
   
@@ -94,7 +98,7 @@ function App() {
     possibleResponses = [...possibleResponses, country].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
 
     tourNumber.current = 0;
-    score.current = 5;
+    score.current = 10;
     
 
     correctResponseSetState(country);
@@ -113,7 +117,7 @@ function App() {
           <div className = "results">
             <div className="img"><img src={resultsImg} alt="" /></div>
             <h2>Results</h2>
-            <p>You got <span>{score.current}/5</span> correct answers</p>
+            <p>You got <span>{score.current}/10</span> correct answers</p>
             <button className="button" onClick = { e => play()}>
               Try again
             </button>
@@ -121,9 +125,18 @@ function App() {
           : 
           <>
             <div className="logo">
-            <img src={adventure}alt="" /> 
+              <img src={adventure}alt="" /> 
             </div>
-            <div className="question">{correctResponseState.capital} is the capital of ?</div>
+            {
+              toggleFlagCapitalState ? 
+              <div>
+                <div className="flag"><img src={correctResponseState.flag} alt="" /></div>
+                <div className="question">Which country does this flag belong to? </div>
+              </div>
+              :
+              <div className="question">{correctResponseState.capital} is the capital of ?</div>
+            }
+            
             <ul className="responses">
               {
                 
