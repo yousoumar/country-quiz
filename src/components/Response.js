@@ -1,5 +1,5 @@
 
-export default function Response({name, index, correctResponse, possibleShownResponses, addToRef, newQuestion, firstTestState, firstTestSetState, score }) {
+export default function Response({name, index, correctResponse, possibleShownResponses, addToRef, firstTestState, firstTestSetState, score}) {
     
     function checkResponse(element) {
 
@@ -21,16 +21,7 @@ export default function Response({name, index, correctResponse, possibleShownRes
                     }
                 });
             }
-        }else{
-            return
         }
-        
-        
-        setTimeout(()=>{
-            
-            newQuestion();
-            
-        }, 1000);
 
     }
 

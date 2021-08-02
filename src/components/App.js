@@ -15,7 +15,7 @@ function App() {
   // current question possible responses
   const [possibleResponsesState, possibleResponsesSetState] = useState([]);
 
-  // prevents user from trying the same question multiple times
+  // prevents user from trying the same question multiple times, and toggles next button
   const [firstTestState, firstTestSetState] = useState(true);
 
   // play and end game
@@ -106,6 +106,7 @@ function App() {
     countriesSetState(storageCountries);
     gameOverSetState(false)
   }
+  
   return (
     <>
     <div id="app">
@@ -148,7 +149,6 @@ function App() {
                                             correctResponse = {correctResponseState}
                                             addToRef= {addToRef}
                                             possibleShownResponses = {ref.current}
-                                            newQuestion = {newQuestion}
                                             firstTestState = {firstTestState}
                                             firstTestSetState ={ firstTestSetState}
                                             score = {score}
@@ -157,6 +157,10 @@ function App() {
                                           
              }
             </ul>
+            {
+              !firstTestState && <button className = "button next" onClick = {newQuestion} >Next</button>
+            }
+            
           </>
       
           
