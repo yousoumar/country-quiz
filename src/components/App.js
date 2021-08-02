@@ -89,7 +89,7 @@ function App() {
     ref.current = [];   
     tourNumber.current ++;
     
-    if(tourNumber.current >= 10){
+    if(tourNumber.current > 10){
       gameOverSetState(true);
       
     }
@@ -113,7 +113,7 @@ function App() {
     let possibleResponses = storageCountries.splice(0, 3);
     possibleResponses = [...possibleResponses, country].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
 
-    tourNumber.current = 0;
+    tourNumber.current = 1;
     score.current = 10;
     
 
@@ -150,6 +150,7 @@ function App() {
                       <div className="logo">
                         <img src={adventure}alt="" /> 
                       </div>
+                      <div className = "tour-number">{tourNumber.current}/10</div>
                       {
                         toggleFlagCapitalState ? 
                         <div>
