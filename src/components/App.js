@@ -2,6 +2,7 @@ import {useState, useEffect, useRef} from 'react';
 import adventure from '../assets/adventure.svg';
 import Response from './Response';
 import resultsImg from '../assets/winners.svg';
+import Loader from './Loader';
 
 function App() {
 
@@ -24,6 +25,12 @@ function App() {
   // allows to alternate questions between flag and capital
   const [toggleFlagCapitalState, toggleFlagCapitalSetState] = useState(false);
 
+  // to handle api call errors
+  const [apiErrorState, apiErrorSetState] = useState(false);
+
+  // what allows us to handle our loader
+  const [loaderState, loaderSetState] = useState('');
+  
   // to store possible responses reference
   const ref = useRef([]);
 
@@ -50,14 +57,23 @@ function App() {
         correctResponseSetState(country);
         possibleResponsesSetState(possibleResponses);
         countriesSetState(data);
-      } );
+      } )
+      .catch(()=>{
+        apiErrorSetState(true);
+      });
     }else{
 
         play();
 
     }
+
+    const timer = setTimeout(()=>{
+      loaderSetState('loaded');
+    }, 2000)
    
-    
+    return ()=>{
+      clearTimeout(timer);
+    }
     
   }, []);
 
@@ -109,66 +125,76 @@ function App() {
   
   return (
     <>
-    <div id="app">
-      <h1>Country quiz</h1>
-      <div className="container">
-        {
-          gameOverState ? 
-          
-          <div className = "results">
-            <div className="img"><img src={resultsImg} alt="" /></div>
-            <h2>Results</h2>
-            <p>You got <span>{score.current}/10</span> correct answers.</p>
-            <button className="button" onClick = { e => play()}>
-              Try again
-            </button>
-          </div> 
-          : 
-          <>
-            <div className="logo">
-              <img src={adventure}alt="" /> 
-            </div>
-            {
-              toggleFlagCapitalState ? 
-              <div>
-                <div className="flag"><img src={correctResponseState.flag} alt="" /></div>
-                <div className="question">Which country does this flag belong to? </div>
-              </div>
-              :
-              <div className="question">{correctResponseState.capital} is the capital of ?</div>
-            }
-            
-            <ul className="responses">
-              {
+      {
+        loaderState === '' ? <Loader /> : 
+        <>
+          {
+            apiErrorState ? <p className = "apiError">We have issues with our database. Please come back later :)</p> : 
+            <>
+              <div id="app">
+                <h1>Country quiz</h1>
+                <div className="container">
+                  {
+                    gameOverState ? 
+                    
+                    <div className = "results">
+                      <div className="img"><img src={resultsImg} alt="" /></div>
+                      <h2>Results</h2>
+                      <p>You got <span>{score.current}/10</span> correct answers.</p>
+                      <button className="button" onClick = { e => play()}>
+                        Try again
+                      </button>
+                    </div> 
+                    : 
+                    <>
+                      <div className="logo">
+                        <img src={adventure}alt="" /> 
+                      </div>
+                      {
+                        toggleFlagCapitalState ? 
+                        <div>
+                          <div className="flag"><img src={correctResponseState.flag} alt="" /></div>
+                          <div className="question">Which country does this flag belong to? </div>
+                        </div>
+                        :
+                        <div className="question">{correctResponseState.capital} is the capital of ?</div>
+                      }
+                      
+                      <ul className="responses">
+                        {
+                          
+                          possibleResponsesState.map((possibleResponse, index) => 
+                                                    <Response
+                                                      name = {possibleResponse.name}
+                                                      key = {possibleResponse.name} 
+                                                      index ={index}
+                                                      correctResponse = {correctResponseState}
+                                                      addToRef= {addToRef}
+                                                      possibleShownResponses = {ref.current}
+                                                      firstTestState = {firstTestState}
+                                                      firstTestSetState ={ firstTestSetState}
+                                                      score = {score}
+                                                    />
+                                                    )
+                                                    
+                      }
+                      </ul>
+                      {
+                        !firstTestState && <button className = "button next" onClick = {newQuestion} >Next</button>
+                      }
+                      
+                    </>
                 
-                possibleResponsesState.map((possibleResponse, index) => 
-                                          <Response
-                                            name = {possibleResponse.name}
-                                            key = {possibleResponse.name} 
-                                            index ={index}
-                                            correctResponse = {correctResponseState}
-                                            addToRef= {addToRef}
-                                            possibleShownResponses = {ref.current}
-                                            firstTestState = {firstTestState}
-                                            firstTestSetState ={ firstTestSetState}
-                                            score = {score}
-                                          />
-                                          )
-                                          
-             }
-            </ul>
-            {
-              !firstTestState && <button className = "button next" onClick = {newQuestion} >Next</button>
-            }
-            
-          </>
-      
-          
-        }
-      </div>
+                    
+                  }
+                </div>
 
-    </div>
-    <footer><p>created by <a target="_blank" href="https://github.com/yousoumar" rel="noreferrer">yousoumar</a> - devchallenges.io</p></footer>
+              </div>
+              <footer><p>created by <a target="_blank" href="https://github.com/yousoumar" rel="noreferrer">yousoumar</a> - devchallenges.io</p></footer>
+            </>
+          }
+        </>
+      }
     </>
   );
 }
