@@ -16,7 +16,7 @@ function App() {
   const [possibleResponsesState, possibleResponsesSetState] = useState([]);
 
   // prevents user from trying the same question multiple times
-  let [firstTestState, firstTestSetState] = useState(true);
+  const [firstTestState, firstTestSetState] = useState(true);
 
   // play and end game
   const [gameOverState, gameOverSetState] = useState(false);
@@ -31,7 +31,7 @@ function App() {
   const score = useRef(10);
 
   // count the number of game turns
-  let tourNumber = useRef(0);
+  const tourNumber = useRef(0);
 
   useEffect(() => {
     
@@ -117,7 +117,7 @@ function App() {
           <div className = "results">
             <div className="img"><img src={resultsImg} alt="" /></div>
             <h2>Results</h2>
-            <p>You got <span>{score.current}/10</span> correct answers</p>
+            <p>You got <span>{score.current}/10</span> correct answers.</p>
             <button className="button" onClick = { e => play()}>
               Try again
             </button>
@@ -148,17 +148,10 @@ function App() {
                                             correctResponse = {correctResponseState}
                                             addToRef= {addToRef}
                                             possibleShownResponses = {ref.current}
-                                            countriesSetState = {countriesSetState}
-                                            countriesState = {countriesState}
                                             newQuestion = {newQuestion}
-                                            possibleResponsesSetState = {possibleResponsesSetState}
-                                            possibleResponsesState = {possibleResponsesState}
                                             firstTestState = {firstTestState}
                                             firstTestSetState ={ firstTestSetState}
-                                            gameOverSetState = {gameOverSetState}
                                             score = {score}
-                                            tourNumber = {tourNumber}
-                                  
                                           />
                                           )
                                           

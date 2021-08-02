@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
 *, :after, :before {
   box-sizing: border-box;
   margin: 0;
   padding:0
 }
 body {
-  font-family: Fira Mono, monospace;
+  font-family: 'Josefin Sans', sans-serif;
   background: url('./assets/background.png') no-repeat center / cover ;
   overflow-x: hidden;
  
@@ -88,6 +88,9 @@ button{
   transition: .3s;
 }
 
+#app li:last-child{
+  margin-bottom: 0;
+}
 #app li.correct{
   background: #60BF88;
   border-color: #60BF88;;
@@ -114,7 +117,7 @@ button{
 }
 #app .flag img{
   width: 5.4rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.7rem;
   filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.1));
   border-radius: 4px;
 }
@@ -136,7 +139,9 @@ button{
   font-size: 3rem;
   margin: 4rem 0 2rem 0rem;
 }
-
+.results p{
+  font-size: 1.1rem;
+}
 .results span{
   font-size: 2rem;
   color: #60BF88;
@@ -148,7 +153,7 @@ button{
   padding: 1rem 1.5rem;
   margin: 3rem 0 0 0 ;
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight:600;
 
 }
 
