@@ -7,9 +7,7 @@
 body {
   font-family: 'Josefin Sans', sans-serif;
   background: url('./assets/background.png') no-repeat center / cover ;
-  overflow-x: hidden;
- 
-  
+  overflow-x: hidden; 
 }
 
 
@@ -26,20 +24,19 @@ button{
   font-size: inherit;
   font-family: inherit;
   color: inherit;
-}
-.button{
   border: 2px solid #1D355D;
   border-radius: 12px;
   padding: 1rem 1.5rem;
-  margin: 3rem 0 0 0 ;
   font-size: 1.1rem;
   font-weight:600;
+  max-width: 9rem;
+  margin: 0 auto;
+  color: #2F527B;
 
 }
+
 .button.next{
-  margin-left: auto;
-  margin-bottom: 0;
- 
+  margin-right: unset;
 }
 #root {
   
@@ -68,7 +65,7 @@ button{
   background: #FFFFFF;
   border-radius: 24px;
   position: relative;
-  padding: 4rem 2rem;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
 }
@@ -81,9 +78,7 @@ button{
   
 }
 #app .question{
-
   font-size: 1.5rem;
-  line-height: 36px;
   color: #2F527B;
 }
 #app ul{
@@ -103,9 +98,6 @@ button{
   transition: .3s;
 }
 
-#app li:last-child{
-  margin-bottom: 0;
-}
 #app li.correct{
   background: #60BF88;
   border-color: #60BF88;;
@@ -138,11 +130,11 @@ button{
 }
 .results{
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  gap: 1.7rem;
   justify-content: center;
   color: #1D355D;
+  font-size: 1.1rem;
 }
 .results .img{
   max-width: 15rem;
@@ -152,11 +144,9 @@ button{
 .results h2{
 
   font-size: 3rem;
-  margin: 4rem 0 2rem 0rem;
+  
 }
-.results p{
-  font-size: 1.1rem;
-}
+
 .results span{
   font-size: 2rem;
   color: #60BF88;
@@ -180,7 +170,7 @@ footer a{
 }
 .loader{
   width: 10rem;
-  margin: 2rem auto;
+  margin: 0 auto;
   text-align: center;
   color: white;
 }
