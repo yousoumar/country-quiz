@@ -8,6 +8,7 @@ body {
   font-family: 'Josefin Sans', sans-serif;
   background: url('./assets/background.png') no-repeat center / cover ;
   overflow-x: hidden; 
+  color: #2F527B;
 }
 
 
@@ -22,14 +23,14 @@ button{
   background-color: transparent;
   cursor: pointer;
   font-family: inherit;
-  border: 2px solid #1D355D;
+  border: 2px solid #2F527B;
   border-radius: 12px;
   padding: 1rem 1.5rem;
   font-size: 1.1rem;
   font-weight:600;
   max-width: 9rem;
   margin: 0 auto;
-  color: #2F527B;
+  
 
 }
 
@@ -81,7 +82,6 @@ button{
 }
 #app .question{
   font-size: 1.5rem;
-  color: #2F527B;
 }
 #app ul{
   list-style: none;
@@ -130,7 +130,6 @@ button{
 #app .flag img{
   width: 5.4rem;
   margin-bottom: 1.7rem;
-  filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.1));
   border-radius: 4px;
 }
 
@@ -140,7 +139,6 @@ button{
   display: grid;
   gap: 1.7rem;
   justify-content: center;
-  color: #1D355D;
   font-size: 1.1rem;
 }
 .results .img{
