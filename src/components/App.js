@@ -130,7 +130,6 @@ function App() {
         <>
           {
             apiErrorState ? <p className = "apiError">We have issues with our database. Please come back later :)</p> : 
-            <>
               <div id="app">
                 <h1>Country quiz</h1>
                 <div className="container">
@@ -188,8 +187,6 @@ function App() {
                 </div>
 
               </div>
-              <footer><p>created by <a target="_blank" href="https://github.com/yousoumar" rel="noreferrer">yousoumar</a> - devchallenges.io</p></footer>
-            </>
           }
         </>
       }
