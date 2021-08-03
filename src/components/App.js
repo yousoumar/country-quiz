@@ -74,7 +74,7 @@ function App() {
     return ()=>{
       clearTimeout(timer);
     }
-    
+  // eslint-disable-next-line
   }, []);
 
   function addToRef(element) {
