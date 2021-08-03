@@ -16,7 +16,7 @@ function App() {
   // current question possible responses
   const [possibleResponsesState, possibleResponsesSetState] = useState([]);
 
-  // prevents user from trying the same question multiple times, and toggles next button
+  // prevents user from trying the same question multiple times
   const [firstTestState, firstTestSetState] = useState(true);
 
   // play and end game
@@ -175,15 +175,12 @@ function App() {
                                                       firstTestState = {firstTestState}
                                                       firstTestSetState ={ firstTestSetState}
                                                       score = {score}
+                                                      newQuestion = {newQuestion}
                                                     />
                                                     )
                                                     
                       }
-                      </ul>
-                      {
-                        !firstTestState && <button className = "button next" onClick = {newQuestion} >Next</button>
-                      }
-                      
+                      </ul> 
                     </>
                 
                     
