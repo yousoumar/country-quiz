@@ -8,7 +8,7 @@ export default function Response({name, index, correctResponse, possibleShownRes
             let userResponse = element.children[1].innerText;
             if (userResponse === correctResponse.name){
                 element.classList.add('correct');
-                element.querySelector('img').src = process.env.PUBLIC_URL + '/images/correct.svg'
+                element.querySelector('img').src = process.env.PUBLIC_URL + '/images/correct.svg';
                 
             }else{
                 score.current --;
@@ -17,7 +17,7 @@ export default function Response({name, index, correctResponse, possibleShownRes
                 possibleShownResponses.forEach(element => {
                     if (element.children[1].innerText === correctResponse.name){
                         element.classList.add('correct');
-                        element.querySelector('img').src = process.env.PUBLIC_URL + '/images/correct.svg'
+                        element.querySelector('img').src = process.env.PUBLIC_URL + '/images/correct.svg';
                     }
                 });
             }

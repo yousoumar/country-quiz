@@ -6,4 +6,4 @@ Eventuelle erreur de l’API, tenter deux fois la même question, la place de la
 
 Vous pouvez visiter en cliquant sur l’image ci-dessous ou sur le lien en bas de la section `About`.
 
-<a href = "https://yousoumar.github.io/country-quiz/"><img src = "./secreenshot.png"></img></a>
+<a href = "https://yousoumar.github.io/country-quiz/"><img src = "public/images/secreenshot.png"></img></a>
