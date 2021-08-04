@@ -1,16 +1,13 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import adventure from '../assets/adventure.svg';
 import Response from './Response';
 import resultsImg from '../assets/winners.svg';
 import Loader from './Loader';
+import useFetch from './useFetch';
 
 function App() {
 
-  // stores data sent by the API
-  const [countriesState, countriesSetState] = useState([]);
-
-  // stores data sent by the API in session storage so that we have less requests
-  const storageCountries = JSON.parse(sessionStorage.getItem('countries')) ;
+  const {countriesState, countriesSetState, storageData, apiErrorState, loaderState} = useFetch("https://restcountries.eu/rest/v2/all");
 
   // current question response
   const [correctResponseState, correctResponseSetState] = useState({});
@@ -27,12 +24,6 @@ function App() {
   // allows to alternate questions between flag and capital
   const [toggleFlagCapitalState, toggleFlagCapitalSetState] = useState(false);
 
-  // to handle api call errors
-  const [apiErrorState, apiErrorSetState] = useState(false);
-
-  // what allows us to handle our loader
-  const [loaderState, loaderSetState] = useState('');
-  
   // to store possible responses reference
   const ref = useRef([]);
 
@@ -40,38 +31,8 @@ function App() {
   const score = useRef(10);
 
   // counts remaining questions number 
-  const tourNumber = useRef(1);
-
-  useEffect(() => {
-
-    const timer = setTimeout(()=>{
-      fetch("https://restcountries.eu/rest/v2/all")
-      .then(response => response.json())
-      .then(data =>{
-        data = data.filter(item => item.name && item.capital && item.flag && item.numericCode);
-        data.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()))
-        sessionStorage.setItem('countries', JSON.stringify(data));
+  const tourNumber = useRef(0);
   
-        let country = data.splice(Math.floor(Math.random()*(data.length)), 1)[0];
-        let possibleResponses = data.splice(0, 3);
-        possibleResponses = [country, ...possibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
-  
-        correctResponseSetState(country);
-        possibleResponsesSetState(possibleResponses);
-        countriesSetState(data);
-        loaderSetState('loaded');
-      })
-      .catch(()=>{
-        apiErrorSetState(true);
-        loaderSetState('loaded');
-      });
-    }, 1000); 
-
-    return ()=>{
-      clearTimeout(timer);
-    }
-  // eslint-disable-next-line
-  }, []);
 
   function addToRef(element) {
       
@@ -104,25 +65,27 @@ function App() {
     firstTestSetState(true);
   }
   
-  function play(){
-    let country = storageCountries.splice(Math.floor(Math.random()*(storageCountries.length)), 1)[0];
-    let possibleResponses = storageCountries.splice(0, 3);
-    possibleResponses = [...possibleResponses, country].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
-
-    tourNumber.current = 1;
+  function newRound(){
+    tourNumber.current = 0;
     score.current = 10;
-    
+    countriesSetState(storageData.slice());
+    gameOverSetState(false);
 
-    correctResponseSetState(country);
-    possibleResponsesSetState(possibleResponses);
-    countriesSetState(storageCountries);
-    gameOverSetState(false)
   }
+  
+  useEffect(()=>{
+
+    if (countriesState.length !== 0 ){
+      newQuestion();
+    }
+   
+    // eslint-disable-next-line
+  }, [countriesState]);
   
   return (
     <>
       {
-        loaderState === '' ? <Loader /> : 
+        loaderState === 'loading' ? <Loader /> : 
         <>
           {
             apiErrorState ? <p className = "apiError">We have issues with our database. Please come back later :)</p> : 
@@ -136,7 +99,7 @@ function App() {
                       <div className="img"><img src={resultsImg} alt="" /></div>
                       <h2>Results</h2>
                       <p>You got <span>{score.current}/10</span> correct answers.</p>
-                      <button className="button" onClick = { e => play()}>
+                      <button className="button" onClick = { e => newRound()}>
                         Try again
                       </button>
                     </div> 
