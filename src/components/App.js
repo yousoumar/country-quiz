@@ -6,10 +6,13 @@ import Loader from './Loader';
 
 function App() {
 
-  // store data sent by the API
+  // stores data sent by the API
   const [countriesState, countriesSetState] = useState([]);
-  const storageCountries = JSON.parse(localStorage.getItem('countries')) ;
 
+  // stores data sent by the API in session storage so that we have less requests
+  const storageCountries = JSON.parse(sessionStorage.getItem('countries')) ;
+  
+  console.log(countriesState.length)
   // current question response
   const [correctResponseState, correctResponseSetState] = useState({});
 
@@ -42,42 +45,32 @@ function App() {
 
   useEffect(() => {
     let timer; 
-    if (!storageCountries){
-      fetch("https://restcountries.eu/rest/v2/all")
-      .then(response => response.json())
-      .then(data =>{
-        data = data.filter(item => item.name && item.capital && item.flag && item.numericCode);
-        data.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()))
-        localStorage.setItem('countries', JSON.stringify(data));
-
-        let country = data.splice(Math.floor(Math.random()*(data.length)), 1)[0];
-        let possibleResponses = data.splice(0, 3);
-        possibleResponses = [country, ...possibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
-
-        correctResponseSetState(country);
-        possibleResponsesSetState(possibleResponses);
-        countriesSetState(data);
-        timer = setTimeout(()=>{
-          loaderSetState('loaded');
-        }, 1000);
-      } )
-      .catch(()=>{
-        apiErrorSetState(true);
-        timer = setTimeout(()=>{
-          loaderSetState('loaded');
-        }, 1000);
-      });
-    }else{
-
-        play();
-        timer = setTimeout(()=>{
-          loaderSetState('loaded');
-        }, 1000);
-
-    }
-
     
-   
+    fetch("https://restcountries.eu/rest/v2/all")
+    .then(response => response.json())
+    .then(data =>{
+      data = data.filter(item => item.name && item.capital && item.flag && item.numericCode);
+      data.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()))
+      sessionStorage.setItem('countries', JSON.stringify(data));
+
+      let country = data.splice(Math.floor(Math.random()*(data.length)), 1)[0];
+      let possibleResponses = data.splice(0, 3);
+      possibleResponses = [country, ...possibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
+
+      correctResponseSetState(country);
+      possibleResponsesSetState(possibleResponses);
+      countriesSetState(data);
+      timer = setTimeout(()=>{
+        loaderSetState('loaded');
+      }, 1000);
+    } )
+    .catch(()=>{
+      apiErrorSetState(true);
+      timer = setTimeout(()=>{
+        loaderSetState('loaded');
+      }, 1000);
+    });
+
     return ()=>{
       clearTimeout(timer);
     }
