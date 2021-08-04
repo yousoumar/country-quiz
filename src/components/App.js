@@ -39,8 +39,8 @@ function App() {
   // to store score
   const score = useRef(10);
 
-  // count the number of game turns
-  const tourNumber = useRef(0);
+  // counts remaining questions number 
+  const tourNumber = useRef(1);
 
   useEffect(() => {
 
