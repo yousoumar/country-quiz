@@ -11,8 +11,7 @@ function App() {
 
   // stores data sent by the API in session storage so that we have less requests
   const storageCountries = JSON.parse(sessionStorage.getItem('countries')) ;
-  
-  console.log(countriesState.length)
+
   // current question response
   const [correctResponseState, correctResponseSetState] = useState({});
 
@@ -44,32 +43,29 @@ function App() {
   const tourNumber = useRef(0);
 
   useEffect(() => {
-    let timer; 
-    
-    fetch("https://restcountries.eu/rest/v2/all")
-    .then(response => response.json())
-    .then(data =>{
-      data = data.filter(item => item.name && item.capital && item.flag && item.numericCode);
-      data.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()))
-      sessionStorage.setItem('countries', JSON.stringify(data));
 
-      let country = data.splice(Math.floor(Math.random()*(data.length)), 1)[0];
-      let possibleResponses = data.splice(0, 3);
-      possibleResponses = [country, ...possibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
-
-      correctResponseSetState(country);
-      possibleResponsesSetState(possibleResponses);
-      countriesSetState(data);
-      timer = setTimeout(()=>{
+    const timer = setTimeout(()=>{
+      fetch("https://restcountries.eu/rest/v2/all")
+      .then(response => response.json())
+      .then(data =>{
+        data = data.filter(item => item.name && item.capital && item.flag && item.numericCode);
+        data.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()))
+        sessionStorage.setItem('countries', JSON.stringify(data));
+  
+        let country = data.splice(Math.floor(Math.random()*(data.length)), 1)[0];
+        let possibleResponses = data.splice(0, 3);
+        possibleResponses = [country, ...possibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
+  
+        correctResponseSetState(country);
+        possibleResponsesSetState(possibleResponses);
+        countriesSetState(data);
         loaderSetState('loaded');
-      }, 1000);
-    } )
-    .catch(()=>{
-      apiErrorSetState(true);
-      timer = setTimeout(()=>{
+      })
+      .catch(()=>{
+        apiErrorSetState(true);
         loaderSetState('loaded');
-      }, 1000);
-    });
+      });
+    }, 1000); 
 
     return ()=>{
       clearTimeout(timer);
