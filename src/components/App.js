@@ -41,7 +41,7 @@ function App() {
   const tourNumber = useRef(0);
 
   useEffect(() => {
-    
+    let timer; 
     if (!storageCountries){
       fetch("https://restcountries.eu/rest/v2/all")
       .then(response => response.json())
@@ -57,19 +57,26 @@ function App() {
         correctResponseSetState(country);
         possibleResponsesSetState(possibleResponses);
         countriesSetState(data);
+        timer = setTimeout(()=>{
+          loaderSetState('loaded');
+        }, 1000);
       } )
       .catch(()=>{
         apiErrorSetState(true);
+        timer = setTimeout(()=>{
+          loaderSetState('loaded');
+        }, 1000);
       });
     }else{
 
         play();
+        timer = setTimeout(()=>{
+          loaderSetState('loaded');
+        }, 1000);
 
     }
 
-    const timer = setTimeout(()=>{
-      loaderSetState('loaded');
-    }, 2000)
+    
    
     return ()=>{
       clearTimeout(timer);
