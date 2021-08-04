@@ -1,4 +1,5 @@
 import {useState, useRef} from 'react';
+import Response from './Response';
 
 export default function useGame(storageData, countriesSetState, countriesState) {
 
@@ -66,18 +67,51 @@ export default function useGame(storageData, countriesSetState, countriesState) 
 
     }
 
+
+    function displayQuestion(){
+
+        return toggleFlagCapitalState ? 
+                <div>
+                    <div className="flag"><img src={correctResponseState.flag} alt="" /></div>
+                    <div className="question">Which country does this flag belong to? </div>
+                </div>
+                        :
+                <div className="question">{correctResponseState.capital} is the capital of ?</div>
+        
+    }
+
+    function displayPossibleResponses(){
+
+        return possibleResponsesState.map((possibleResponse, index) => 
+                                                    <Response
+                                                      name = {possibleResponse.name}
+                                                      key = {possibleResponse.name} 
+                                                      index ={index}
+                                                      correctResponse = {correctResponseState}
+                                                      addToPossibleShownResponsesRef= {addToPossibleShownResponsesRef}
+                                                      possibleShownResponsesRef = {possibleShownResponsesRef.current}
+                                                      firstTestState = {firstTestState}
+                                                      firstTestSetState ={ firstTestSetState}
+                                                      score = {score}
+                                                      newQuestion = {newQuestion}
+                                                    />
+                                                    );
+       
+    }
+
+    function displayScore(){
+        return score.current+ "/10";
+    }
+    function displayRemainingQuestions(){
+        return tourNumber.current + "/10";
+    }
     return {
                 newQuestion, 
                 newRound, 
-                toggleFlagCapitalState, 
-                gameOverState, 
-                correctResponseState, 
-                possibleResponsesState, 
-                score, 
-                firstTestSetState, 
-                firstTestState, 
-                tourNumber, 
-                possibleShownResponsesRef : possibleShownResponsesRef.current,
-                addToPossibleShownResponsesRef
+                displayQuestion, 
+                displayPossibleResponses,
+                displayScore,
+                displayRemainingQuestions,
+                gameOver : gameOverState,
             };
 }

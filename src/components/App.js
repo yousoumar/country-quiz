@@ -1,6 +1,5 @@
 import {useEffect} from 'react';
 import adventure from '../assets/adventure.svg';
-import Response from './Response';
 import resultsImg from '../assets/winners.svg';
 import Loader from './Loader';
 import useFetch from './useFetch';
@@ -19,16 +18,11 @@ function App() {
   const {
           newRound, 
           newQuestion, 
-          addToPossibleShownResponsesRef,
-          firstTestSetState,
-          firstTestState,
-          gameOverState, 
-          correctResponseState, 
-          possibleResponsesState,
-          possibleShownResponsesRef, 
-          toggleFlagCapitalState, 
-          tourNumber, 
-          score, 
+          displayQuestion, 
+          displayPossibleResponses,
+          displayScore,
+          displayRemainingQuestions, 
+          gameOver, 
         } = useGame (storageData, countriesSetState, countriesState);
 
   
@@ -52,12 +46,12 @@ function App() {
                 <h1>Country quiz</h1>
                 <div className="container">
                   {
-                    gameOverState ? 
+                    gameOver ? 
                     
                     <div className = "results">
                       <div className="img"><img src={resultsImg} alt="" /></div>
                       <h2>Results</h2>
-                      <p>You got <span>{score.current}/10</span> correct answers.</p>
+                      <p>You got <span>{displayScore()}</span> correct answers.</p>
                       <button className="button" onClick = { e => newRound()}>
                         Try again
                       </button>
@@ -67,40 +61,19 @@ function App() {
                       <div className="logo">
                         <img src={adventure}alt="" /> 
                       </div>
-                      <div className = "tour-number">{tourNumber.current}/10</div>
+                      <div className = "tour-number"> {displayRemainingQuestions()}</div>
                       {
-                        toggleFlagCapitalState ? 
-                        <div>
-                          <div className="flag"><img src={correctResponseState.flag} alt="" /></div>
-                          <div className="question">Which country does this flag belong to? </div>
-                        </div>
-                        :
-                        <div className="question">{correctResponseState.capital} is the capital of ?</div>
+                        displayQuestion()
                       }
                       
                       <ul className="responses">
                         {
                           
-                          possibleResponsesState.map((possibleResponse, index) => 
-                                                    <Response
-                                                      name = {possibleResponse.name}
-                                                      key = {possibleResponse.name} 
-                                                      index ={index}
-                                                      correctResponse = {correctResponseState}
-                                                      addToPossibleShownResponsesRef= {addToPossibleShownResponsesRef}
-                                                      possibleShownResponsesRef = {possibleShownResponsesRef}
-                                                      firstTestState = {firstTestState}
-                                                      firstTestSetState ={ firstTestSetState}
-                                                      score = {score}
-                                                      newQuestion = {newQuestion}
-                                                    />
-                                                    )
+                          displayPossibleResponses()
                                                     
-                      }
+                        }
                       </ul> 
                     </>
-                
-                    
                   }
                 </div>
 
