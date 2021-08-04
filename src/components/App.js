@@ -1,77 +1,36 @@
-import {useState, useRef, useEffect} from 'react';
+import {useEffect} from 'react';
 import adventure from '../assets/adventure.svg';
 import Response from './Response';
 import resultsImg from '../assets/winners.svg';
 import Loader from './Loader';
 import useFetch from './useFetch';
+import useGame from './useGame';
 
 function App() {
 
-  const {countriesState, countriesSetState, storageData, apiErrorState, loaderState} = useFetch("https://restcountries.eu/rest/v2/all");
+  const {
+          countriesState, 
+          countriesSetState, 
+          storageData, 
+          apiErrorState, 
+          loaderState
+        } = useFetch("https://restcountries.eu/rest/v2/all");
 
-  // current question response
-  const [correctResponseState, correctResponseSetState] = useState({});
+  const {
+          newRound, 
+          newQuestion, 
+          addToPossibleShownResponsesRef,
+          firstTestSetState,
+          firstTestState,
+          gameOverState, 
+          correctResponseState, 
+          possibleResponsesState,
+          possibleShownResponsesRef, 
+          toggleFlagCapitalState, 
+          tourNumber, 
+          score, 
+        } = useGame (storageData, countriesSetState, countriesState);
 
-  // current question possible responses
-  const [possibleResponsesState, possibleResponsesSetState] = useState([]);
-
-  // prevents user from trying the same question multiple times
-  const [firstTestState, firstTestSetState] = useState(true);
-
-  // play and end game
-  const [gameOverState, gameOverSetState] = useState(false);
-
-  // allows to alternate questions between flag and capital
-  const [toggleFlagCapitalState, toggleFlagCapitalSetState] = useState(false);
-
-  // to store possible responses reference
-  const ref = useRef([]);
-
-  // to store score
-  const score = useRef(10);
-
-  // counts remaining questions number 
-  const tourNumber = useRef(0);
-  
-
-  function addToRef(element) {
-      
-    if (element && !(ref.current.includes(element))){
-      ref.current.push(element);
-    }  
-    
-  }
-  
-  function newQuestion() {
-    ref.current = [];   
-    tourNumber.current ++;
-    
-    if(tourNumber.current > 10){
-      gameOverSetState(true);
-      
-    }
-     
-
-    let country, newPossibleResponses;
-    country =  countriesState.splice(Math.floor(Math.random()*(countriesState.length)), 1)[0];
-    countriesState.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
-
-    newPossibleResponses = countriesState.splice(0, 3);
-    newPossibleResponses = [country, ...newPossibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
-  
-    correctResponseSetState(country);
-    possibleResponsesSetState(newPossibleResponses);
-    toggleFlagCapitalSetState(!toggleFlagCapitalState);
-    firstTestSetState(true);
-  }
-  
-  function newRound(){
-    tourNumber.current = 0;
-    score.current = 10;
-    countriesSetState(storageData.slice());
-    gameOverSetState(false);
-
-  }
   
   useEffect(()=>{
 
@@ -128,8 +87,8 @@ function App() {
                                                       key = {possibleResponse.name} 
                                                       index ={index}
                                                       correctResponse = {correctResponseState}
-                                                      addToRef= {addToRef}
-                                                      possibleShownResponses = {ref.current}
+                                                      addToPossibleShownResponsesRef= {addToPossibleShownResponsesRef}
+                                                      possibleShownResponsesRef = {possibleShownResponsesRef}
                                                       firstTestState = {firstTestState}
                                                       firstTestSetState ={ firstTestSetState}
                                                       score = {score}

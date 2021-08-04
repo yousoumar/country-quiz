@@ -1,5 +1,5 @@
 
-export default function Response({name, index, correctResponse, possibleShownResponses, addToRef, firstTestState, firstTestSetState, score, newQuestion}) {
+export default function Response({name, index, correctResponse, possibleShownResponsesRef, addToPossibleShownResponsesRef, firstTestState, firstTestSetState, score, newQuestion}) {
     
     function checkResponse(element) {
 
@@ -14,7 +14,7 @@ export default function Response({name, index, correctResponse, possibleShownRes
                 score.current --;
                 element.classList.add('incorrect');
                 element.querySelector('img').src = process.env.PUBLIC_URL + '/images/incorrect.svg';
-                possibleShownResponses.forEach(element => {
+                possibleShownResponsesRef.forEach(element => {
                     if (element.children[1].innerText === correctResponse.name){
                         element.classList.add('correct');
                         element.querySelector('img').src = process.env.PUBLIC_URL + '/images/correct.svg';
@@ -37,7 +37,7 @@ export default function Response({name, index, correctResponse, possibleShownRes
         <li
             key = {name} 
             onClick = {(e) => checkResponse(e.currentTarget)}
-            ref = {addToRef}
+            ref = {addToPossibleShownResponsesRef}
             
         >
             <span>{String.fromCharCode(65 + index)}</span>
