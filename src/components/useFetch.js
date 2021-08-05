@@ -18,7 +18,13 @@ export default function useFetch(url) {
 
         const timer = setTimeout(()=>{
             fetch(url)
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok){
+                    return response.json();  
+               }else{
+                    throw Error();
+               }
+            })
             .then(data =>{
                 data = data.filter(item => item.name && item.capital && item.flag && item.numericCode);
                 storageData.current = data.slice();
