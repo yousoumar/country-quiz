@@ -1,7 +1,7 @@
 import {useState, useRef} from 'react';
 import Response from './Response';
 
-export default function useGame(storageData, countriesSetState, countriesState) {
+export default function useGame(data) {
 
     // allows to alternate questions between flag and capital
     const [toggleFlagCapitalState, toggleFlagCapitalSetState] = useState(false);
@@ -47,10 +47,10 @@ export default function useGame(storageData, countriesSetState, countriesState) 
          
     
         let country, newPossibleResponses;
-        country =  countriesState.splice(Math.floor(Math.random()*(countriesState.length)), 1)[0];
-        countriesState.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
+        country =  data.countriesState.splice(Math.floor(Math.random()*(data.countriesState.length)), 1)[0];
+        data.countriesState.sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
     
-        newPossibleResponses = countriesState.splice(0, 3);
+        newPossibleResponses = data.countriesState.splice(0, 3);
         newPossibleResponses = [country, ...newPossibleResponses].sort((country1, country2)=> (parseInt(country2.numericCode)*Math.random()- parseInt(country1.numericCode)*Math.random()));
       
         correctResponseSetState(country);
@@ -62,7 +62,7 @@ export default function useGame(storageData, countriesSetState, countriesState) 
     function newRound(){
         tourNumber.current = 0;
         score.current = 10;
-        countriesSetState(storageData.slice());
+        data.countriesSetState(data.storageData.slice());
         gameOverSetState(false);
 
     }
@@ -105,13 +105,6 @@ export default function useGame(storageData, countriesSetState, countriesState) 
     function displayRemainingQuestions(){
         return tourNumber.current + "/10";
     }
-    return {
-                newQuestion, 
-                newRound, 
-                displayQuestion, 
-                displayPossibleResponses,
-                displayScore,
-                displayRemainingQuestions,
-                gameOver : gameOverState,
-            };
+    
+    return {newQuestion, newRound, displayQuestion, displayPossibleResponses, displayScore, displayRemainingQuestions, gameOver : gameOverState};
 }

@@ -7,52 +7,38 @@ import useGame from './useGame';
 
 function App() {
 
-  const {
-          countriesState, 
-          countriesSetState, 
-          storageData, 
-          apiErrorState, 
-          loaderState
-        } = useFetch("https://restcountries.eu/rest/v2/all");
+  const data = useFetch("https://restcountries.eu/rest/v2/all");
 
-  const {
-          newRound, 
-          newQuestion, 
-          displayQuestion, 
-          displayPossibleResponses,
-          displayScore,
-          displayRemainingQuestions, 
-          gameOver, 
-        } = useGame (storageData, countriesSetState, countriesState);
+  const game = useGame (data);
 
   
   useEffect(()=>{
 
-    if (countriesState.length !== 0 ){
-      newQuestion();
+    if (data.countriesState.length !== 0 ){
+      game.newQuestion();
     }
    
     // eslint-disable-next-line
-  }, [countriesState]);
+  }, [data.countriesState]);
   
   return (
     <>
       {
-        loaderState === 'loading' ? <Loader /> : 
+        data.loaderState === 'loading' ? <Loader /> : 
         <>
           {
-            apiErrorState ? <p className = "apiError">We have issues with our database. Please come back later :)</p> : 
+            data.apiErrorState ? <p className = "apiError">We have issues with our database. Please come back later :)</p> : 
               <div id="app">
                 <h1>Country quiz</h1>
                 <div className="container">
                   {
-                    gameOver ? 
+                    game.gameOver ? 
                     
                     <div className = "results">
                       <div className="img"><img src={resultsImg} alt="" /></div>
                       <h2>Results</h2>
-                      <p>You got <span>{displayScore()}</span> correct answers.</p>
-                      <button className="button" onClick = { e => newRound()}>
+                      <p>You got <span>{game.displayScore()}</span> correct answers.</p>
+                      <button className="button" onClick = { e => game.newRound()}>
                         Try again
                       </button>
                     </div> 
@@ -61,15 +47,15 @@ function App() {
                       <div className="logo">
                         <img src={adventure}alt="" /> 
                       </div>
-                      <div className = "tour-number"> {displayRemainingQuestions()}</div>
+                      <div className = "tour-number"> {game.displayRemainingQuestions()}</div>
                       {
-                        displayQuestion()
+                        game.displayQuestion()
                       }
                       
                       <ul className="responses">
                         {
                           
-                          displayPossibleResponses()
+                          game.displayPossibleResponses()
                                                     
                         }
                       </ul> 

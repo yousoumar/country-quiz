@@ -1,21 +1,21 @@
 
-export default function Response({name, index, correctResponse, possibleShownResponsesRef, addToPossibleShownResponsesRef, firstTestState, firstTestSetState, score, newQuestion}) {
+export default function Response(props) {
     
     function checkResponse(element) {
 
-        if(firstTestState){
-            firstTestSetState(false);
+        if(props.firstTestState){
+            props.firstTestSetState(false);
             let userResponse = element.children[1].innerText;
-            if (userResponse === correctResponse.name){
+            if (userResponse ===  props.correctResponse.name){
                 element.classList.add('correct');
                 element.querySelector('img').src = process.env.PUBLIC_URL + '/images/correct.svg';
                 
             }else{
-                score.current --;
+                props.score.current --;
                 element.classList.add('incorrect');
                 element.querySelector('img').src = process.env.PUBLIC_URL + '/images/incorrect.svg';
-                possibleShownResponsesRef.forEach(element => {
-                    if (element.children[1].innerText === correctResponse.name){
+                props.possibleShownResponsesRef.forEach(element => {
+                    if (element.children[1].innerText ===  props.correctResponse.name){
                         element.classList.add('correct');
                         element.querySelector('img').src = process.env.PUBLIC_URL + '/images/correct.svg';
                     }
@@ -27,7 +27,7 @@ export default function Response({name, index, correctResponse, possibleShownRes
 
         setTimeout(()=>{
             
-            newQuestion();
+            props.newQuestion();
             
         }, 1500);
 
@@ -35,13 +35,13 @@ export default function Response({name, index, correctResponse, possibleShownRes
 
     return (
         <li
-            key = {name} 
+            key = {props.name} 
             onClick = {(e) => checkResponse(e.currentTarget)}
-            ref = {addToPossibleShownResponsesRef}
+            ref = {props.addToPossibleShownResponsesRef}
             
         >
-            <span>{String.fromCharCode(65 + index)}</span>
-            <span>{name}</span>
+            <span>{String.fromCharCode(65 + props.index)}</span>
+            <span>{props.name}</span>
             <span className = "icon"><img src="" alt="" /></span>
         </li>
     )
