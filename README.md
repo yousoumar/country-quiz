@@ -1,9 +1,7 @@
 ## Country quiz
 
-Avec un gros besoin en logique, ce projet `React` permet de tester sa culture générale sur les pays du mode. Les données proviennent d’une `API` tierce, mises dans une `useRef` pour ne plus faire d'appels durant le jeux.
+With a big need for logic, this `React` project allows you to test your general knowledge about countries. The data comes from a third-party `API`, put in a` useRef` to stop making more calls during the game.
 
-Eventuelle erreur de l’API, tenter deux fois la même question, la place de la bonne réponse dans les réponses suggérées, tout est pensé à l’avance lors du développement. 
+Possible API errors, trying the same question twice, the correct answer's place in the suggested ones..., everything is thought out in advance during development.
 
-Vous pouvez visiter en cliquant sur l’image ci-dessous ou sur le lien en bas de la section `About`.
-
-<a href = "https://yousoumar.github.io/country-quiz/"><img src = "public/images/secreenshot.png"></img></a>
+<img src = "public/images/secreenshot.png"></img>
